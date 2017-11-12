@@ -43,7 +43,7 @@ def save_hashset_data(hashset_data, file_path):
 
 
 def generate_collection_definition(collection_name):
-    locations = collection_data.COLLECTION_MAP[collection_name]
+    locations = collection_data.COLLECTION_MAP[collection_name][0]
 
     common_data = []
     table = collection_tablegen.multi(collection_name, collection_data.locations_to_storage_devices(locations))
@@ -59,5 +59,5 @@ def generate_collection_definition(collection_name):
 
 
 def generate_collections_definition():
-    for collection_name, locations in ibds_utils.key_sorted_dict_items(collection_data.COLLECTION_MAP):
+    for collection_name, _ in ibds_utils.key_sorted_dict_items(collection_data.COLLECTION_MAP):
         generate_collection_definition(collection_name)

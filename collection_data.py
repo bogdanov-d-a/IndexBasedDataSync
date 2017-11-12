@@ -50,10 +50,12 @@ class Location:
 
 
 COLLECTION_MAP = {
-    'Documents': [
+    'Documents': ([
         Location(StorageDevice('PC'), 'C:\\Documents', True),
         Location(StorageDevice('UMS'), 'Documents', False),
-    ],
+    ], [
+        r'^.*\.tmp$',
+    ]),
 }
 
 
@@ -99,8 +101,8 @@ def pick_storage_device():
 def generate_target_file_list():
     list_ = []
 
-    for name, locations in COLLECTION_MAP.items():
-        for location in locations:
+    for name, data in COLLECTION_MAP.items():
+        for location in data[0]:
             list_.append(gen_index_file_path(name, location.getStorageDevice(), False))
         list_.append(gen_common_file_path(name, False))
         list_.append(gen_hashset_file_path(name, False))

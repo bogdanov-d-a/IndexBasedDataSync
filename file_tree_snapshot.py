@@ -63,12 +63,12 @@ class Index:
         return set(self._data.keys());
 
 
-def create_index(tree_path):
+def create_index(tree_path, skip_paths):
     standard_type_assertion.assert_string('tree_path', tree_path)
 
     index = Index()
 
-    for rel_path in file_tree_scanner.scan(tree_path):
+    for rel_path in file_tree_scanner.scan(tree_path, skip_paths):
         rel_path_key = INDEX_PATH_SEPARATOR.join(rel_path)
         abs_path = os.path.join(tree_path, os.sep.join(rel_path))
         print('Calculating hash for ' + rel_path_key)
@@ -77,13 +77,13 @@ def create_index(tree_path):
     return index
 
 
-def update_index(old_index, tree_path):
+def update_index(old_index, tree_path, skip_paths):
     assert_index('old_index', old_index)
     standard_type_assertion.assert_string('tree_path', tree_path)
 
     index = Index()
 
-    for rel_path in file_tree_scanner.scan(tree_path):
+    for rel_path in file_tree_scanner.scan(tree_path, skip_paths):
         abs_path = os.path.join(tree_path, os.sep.join(rel_path))
         mdate = os.path.getmtime(abs_path)
         rel_path_key = INDEX_PATH_SEPARATOR.join(rel_path)
@@ -131,13 +131,13 @@ def save_index(index, file_path):
     output.close()
 
 
-def update_index_file(tree_path, index_path):
+def update_index_file(tree_path, index_path, skip_paths):
     standard_type_assertion.assert_string('tree_path', tree_path)
     standard_type_assertion.assert_string('index_path', index_path)
 
     if os.path.isfile(index_path):
         old_index = load_index(index_path)
-        new_index = update_index(old_index, tree_path)
+        new_index = update_index(old_index, tree_path, skip_paths)
     else:
-        new_index = create_index(tree_path)
+        new_index = create_index(tree_path, skip_paths)
     save_index(new_index, index_path)

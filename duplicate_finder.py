@@ -33,5 +33,5 @@ def collection_storage_device(collection, storage_device):
 
 
 def collections_common():
-    for collection, locations in ibds_utils.key_sorted_dict_items(collection_data.COLLECTION_MAP):
-        collection_common(collection)
+    for collection_name, _ in ibds_utils.key_sorted_dict_items(collection_data.COLLECTION_MAP):
+        collection_common(collection_name)

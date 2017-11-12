@@ -15,7 +15,7 @@ def multi_storage_devices_of_collection(collection_name, storage_devices, comple
 
 
 def collection(collection_name):
-    locations = collection_data.COLLECTION_MAP[collection_name]
+    locations = collection_data.COLLECTION_MAP[collection_name][0]
 
     complete_location_indices = set([])
     index = 0
@@ -28,5 +28,5 @@ def collection(collection_name):
 
 
 def collections():
-    for collection_name, locations in ibds_utils.key_sorted_dict_items(collection_data.COLLECTION_MAP):
+    for collection_name, _ in ibds_utils.key_sorted_dict_items(collection_data.COLLECTION_MAP):
         collection(collection_name)
