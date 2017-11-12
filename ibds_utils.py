@@ -1,4 +1,8 @@
 import standard_type_assertion
+import re
+
+
+SKIP_PATHS_SEPARATOR = '/'
 
 
 def key_sorted_dict_items(dict_):
@@ -44,3 +48,10 @@ def find_first_in_list_index(list_, pred):
         index += 1
 
     return -1
+
+
+def path_needs_skip(path, skip_paths):
+    for skip_path in skip_paths:
+        if re.match(skip_path, SKIP_PATHS_SEPARATOR.join(path)) is not None:
+            return True
+    return False

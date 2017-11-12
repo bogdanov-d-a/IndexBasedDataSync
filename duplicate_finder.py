@@ -4,11 +4,13 @@ import collection_data
 import collection_definition
 
 
-def collection_common(collection):
+def collection_common(collection, skip_paths):
     data = collection_definition.load_common_data(collection_data.gen_common_file_path(collection))
     table = {}
 
     for path, hash_ in data:
+        if ibds_utils.path_needs_skip(path.split(file_tree_snapshot.INDEX_PATH_SEPARATOR), skip_paths):
+            continue
         if hash_ not in table:
             table[hash_] = []
         table[hash_].append(path)
@@ -33,5 +35,5 @@ def collection_storage_device(collection, storage_device):
 
 
 def collections_common():
-    for collection_name, _ in ibds_utils.key_sorted_dict_items(collection_data.COLLECTION_MAP):
-        collection_common(collection_name)
+    for collection_name, data in ibds_utils.key_sorted_dict_items(collection_data.COLLECTION_MAP):
+        collection_common(collection_name, data[2])

@@ -55,6 +55,8 @@ COLLECTION_MAP = {
         Location(StorageDevice('UMS'), 'Documents', False),
     ], [
         r'^.*\.tmp$',
+    ], [
+        r'^Unsorted/',
     ]),
 }
 
