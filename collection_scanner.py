@@ -2,7 +2,7 @@ import collection_data
 import ibds_utils
 import standard_type_assertion
 import file_tree_snapshot
-import user_path_manager
+import ed_storage_finder
 
 
 def _scan_collection_storage_device(collection_name, storage_device, data_path, skip_paths):
@@ -18,7 +18,7 @@ def scan_storage_device(storage_device):
 
     path_prefix = ''
     if storage_device.isRemovable():
-        path_prefix = user_path_manager.keep_getting_device_path(storage_device.getName())
+        path_prefix = ed_storage_finder.keep_getting_storage_path(storage_device.getName())
 
     for collection_name, data in ibds_utils.key_sorted_dict_items(collection_data.COLLECTION_MAP):
         for location in data[0]:

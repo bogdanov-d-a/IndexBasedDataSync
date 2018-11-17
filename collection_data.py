@@ -1,5 +1,5 @@
 import standard_type_assertion
-import user_interaction
+import ed_user_interaction
 import os
 import ibds_utils
 
@@ -97,7 +97,7 @@ def gen_hashset_file_path(collection, is_path=True):
 
 def pick_storage_device():
     list_ = sorted(list(StorageDevice._DEVICES))
-    return StorageDevice(list_[user_interaction.pick_option('Choose storage device', list_)])
+    return StorageDevice(list_[ed_user_interaction.pick_option('Choose storage device', list_)])
 
 
 def generate_target_file_list():
