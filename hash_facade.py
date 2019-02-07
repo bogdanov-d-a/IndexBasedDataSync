@@ -14,14 +14,13 @@ def read_in_chunks(file_object, chunk_size=1024):
         yield data
 
 
-def sha256(file_name):
+def sha1(file_name):
     standard_type_assertion.assert_string('file_name', file_name)
 
     sha1 = hashlib.sha1()
-    f = open(file_name, 'rb')
-    try:
+
+    with open(file_name, 'rb') as f:
         for chunk in read_in_chunks(f):
             sha1.update(chunk)
-    finally:
-        f.close()
+
     return sha1.hexdigest()
