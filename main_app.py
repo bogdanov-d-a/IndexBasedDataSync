@@ -1,10 +1,10 @@
 import collection_scanner
-import ed_user_interaction
+import edpu.user_interaction
 import collection_data
 import collection_compare
 import collection_definition
 import duplicate_finder
-import ed_pause_at_end
+import edpu.pause_at_end
 
 
 def main():
@@ -17,7 +17,7 @@ def main():
     ]
 
 
-    action = ed_user_interaction.pick_option('Choose an action', ACTIONS)
+    action = edpu.user_interaction.pick_option('Choose an action', ACTIONS)
 
     if action == 0:
         storage_device = collection_data.pick_storage_device()
@@ -39,4 +39,4 @@ def main():
         raise Exception('unexpected action')
 
 
-ed_pause_at_end.run(main, 'Program finished successfully')
+edpu.pause_at_end.run(main, 'Program finished successfully')
