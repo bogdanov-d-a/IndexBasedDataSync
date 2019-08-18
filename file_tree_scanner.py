@@ -3,7 +3,7 @@ import standard_type_assertion
 import ibds_utils
 
 
-EXCLUDE_FILE_NAMES_DEFAULT = ['desktop.ini', 'Thumbs.db', '.hidden', '.nomedia', '.camera']
+EXCLUDE_FILE_NAMES_DEFAULT = ['desktop.ini', 'Thumbs.db', '.hidden', '.nomedia', '.camera', 'sync.ffs_db']
 
 
 def scan(root_path, skip_paths, exclude_file_names=EXCLUDE_FILE_NAMES_DEFAULT):
