@@ -1,4 +1,4 @@
-import ibds_utils
+import ed_ibds.ibds_utils
 
 
 class Object:
@@ -54,7 +54,7 @@ def explore(tree):
     cur_dir = tree
 
     while True:
-        for name, item in ibds_utils.key_sorted_dict_items(cur_dir.data):
+        for name, item in ed_ibds.ibds_utils.key_sorted_dict_items(cur_dir.data):
             if type(item) is Directory:
                 print('[' + name + ']')
             else:

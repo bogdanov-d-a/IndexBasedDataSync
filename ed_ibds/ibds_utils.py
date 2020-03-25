@@ -1,5 +1,5 @@
-import standard_type_assertion
 import re
+import ed_ibds.standard_type_assertion
 
 
 SKIP_PATHS_SEPARATOR = '/'
@@ -11,7 +11,7 @@ def key_sorted_dict_items(dict_):
 
 def print_lists(lists, name=None):
     if name is not None:
-        standard_type_assertion.assert_string('name', name)
+        ed_ibds.standard_type_assertion.assert_string('name', name)
 
     if sum(len(list_[1]) for list_ in lists) > 0:
         if name is not None:

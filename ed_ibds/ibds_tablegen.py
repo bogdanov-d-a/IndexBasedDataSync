@@ -1,10 +1,10 @@
-import standard_type_assertion
-import file_tree_snapshot
-import ibds_utils
+import ed_ibds.standard_type_assertion
+import ed_ibds.file_tree_snapshot
+import ed_ibds.ibds_utils
 
 
 def indexes(index_list):
-    standard_type_assertion.assert_list('index_list', index_list, file_tree_snapshot.assert_index)
+    ed_ibds.standard_type_assertion.assert_list('index_list', index_list, ed_ibds.file_tree_snapshot.assert_index)
 
     table = {}
 
@@ -30,7 +30,7 @@ def indexes(index_list):
 def index_files(index_file_list):
     index_list = []
     for path in index_file_list:
-        index_list.append(file_tree_snapshot.load_index(path))
+        index_list.append(ed_ibds.file_tree_snapshot.load_index(path))
 
     return indexes(index_list)
 
@@ -42,7 +42,7 @@ def get_data_hashes(data):
 def get_same_hash(data):
     hashes = get_data_hashes(data)
 
-    if ibds_utils.is_same_list(hashes):
+    if ed_ibds.ibds_utils.is_same_list(hashes):
         return hashes[0]
     else:
         return None
