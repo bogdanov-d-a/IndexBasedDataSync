@@ -1,9 +1,9 @@
 import codecs
 import ed_ibds.standard_type_assertion
 import ed_ibds.ibds_utils
-import ed_ibds.collection_data
 import ed_ibds.collection_tablegen
 import ed_ibds.ibds_tablegen
+import ed_ibds.path_generator
 
 
 def save_common_data(common_data, file_path):
@@ -46,16 +46,16 @@ def generate_collection_definition(data_dir, collection_dict, collection_name):
     locations = collection_dict[collection_name][0]
 
     common_data = []
-    table = ed_ibds.collection_tablegen.multi(data_dir, collection_name, ed_ibds.collection_data.locations_to_storage_devices(locations))
+    table = ed_ibds.collection_tablegen.multi(data_dir, collection_name, ed_ibds.ibds_utils.locations_to_storage_devices(locations))
     for path, data in ed_ibds.ibds_utils.key_sorted_dict_items(table):
         for hash_ in sorted(list(set(ed_ibds.ibds_tablegen.get_data_hashes(data)))):
             common_data.append((path, hash_))
-    save_common_data(common_data, ed_ibds.collection_data.gen_common_file_path(collection_name, data_dir))
+    save_common_data(common_data, ed_ibds.path_generator.gen_common_file_path(collection_name, data_dir))
 
     hashset = set([])
     for path, hash_ in common_data:
         hashset.add(hash_)
-    save_hashset_data(hashset, ed_ibds.collection_data.gen_hashset_file_path(collection_name, data_dir))
+    save_hashset_data(hashset, ed_ibds.path_generator.gen_hashset_file_path(collection_name, data_dir))
 
 
 def generate_collections_definition(data_dir, collection_dict):

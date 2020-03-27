@@ -1,5 +1,5 @@
 import ed_ibds.ibds_utils
-import ed_ibds.collection_data
+import ed_ibds.path_generator
 import ed_ibds.ibds_compare
 
 
@@ -8,7 +8,7 @@ def multi_storage_devices_of_collection(data_dir, collection_name, storage_devic
     labels = []
 
     for storage_device in storage_devices:
-        paths.append(ed_ibds.collection_data.gen_index_file_path(collection_name, storage_device, data_dir))
+        paths.append(ed_ibds.path_generator.gen_index_file_path(collection_name, storage_device, data_dir))
         labels.append(storage_device.getName())
 
     ed_ibds.ibds_compare.multi_index_files(paths, labels, complete_storage_device_indices, collection_name)
@@ -24,7 +24,7 @@ def collection(data_dir, collection_dict, collection_name):
             complete_location_indices.add(index)
         index += 1
 
-    multi_storage_devices_of_collection(data_dir, collection_name, ed_ibds.collection_data.locations_to_storage_devices(locations), complete_location_indices)
+    multi_storage_devices_of_collection(data_dir, collection_name, ed_ibds.ibds_utils.locations_to_storage_devices(locations), complete_location_indices)
 
 
 def collections(data_dir, collection_dict):

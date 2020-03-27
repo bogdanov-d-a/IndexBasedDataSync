@@ -13,7 +13,7 @@ def indexes(index_list):
         paths = paths | index_main.getKeySet()
 
     none_list = []
-    for i in range(len(index_list)):
+    for _ in range(len(index_list)):
         none_list.append(None)
 
     for path in paths:

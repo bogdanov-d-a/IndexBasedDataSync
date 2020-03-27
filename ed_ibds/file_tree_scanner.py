@@ -15,7 +15,7 @@ def scan(root_path, skip_paths, exclude_file_names=EXCLUDE_FILE_NAMES_DEFAULT):
 
     file_tree = []
 
-    for cur_root_path, dirs, files in os.walk(root_path):
+    for cur_root_path, _, files in os.walk(root_path):
         rel_path_text = os.path.relpath(cur_root_path, root_path)
         if rel_path_text == '.':
             rel_path = []

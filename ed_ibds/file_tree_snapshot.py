@@ -60,7 +60,7 @@ class Index:
         return ed_ibds.ibds_utils.key_sorted_dict_items(self._data)
 
     def getKeySet(self):
-        return set(self._data.keys());
+        return set(self._data.keys())
 
 
 def create_index(tree_path, skip_paths):

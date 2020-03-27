@@ -1,4 +1,5 @@
 import re
+import edpu.user_interaction
 import ed_ibds.standard_type_assertion
 
 
@@ -55,3 +56,14 @@ def path_needs_skip(path, skip_paths):
         if re.match(skip_path, SKIP_PATHS_SEPARATOR.join(path)) is not None:
             return True
     return False
+
+
+def locations_to_storage_devices(locations):
+    return list(map(lambda x: x.getStorageDevice(), locations))
+
+
+def pick_storage_device(device_list):
+    list_ = []
+    for device in device_list:
+        list_.append(device.getName())
+    return device_list[edpu.user_interaction.pick_option('Choose storage device', list_)]

@@ -1,5 +1,5 @@
 import edpu.storage_finder
-import ed_ibds.collection_data
+import ed_ibds.path_generator
 import ed_ibds.ibds_utils
 import ed_ibds.standard_type_assertion
 import ed_ibds.file_tree_snapshot
@@ -11,7 +11,7 @@ def _scan_collection_storage_device(data_dir, collection_name, storage_device, d
     ed_ibds.storage_device.assert_storage_device('storage_device', storage_device)
     ed_ibds.standard_type_assertion.assert_string('data_path', data_path)
 
-    ed_ibds.file_tree_snapshot.update_index_file(data_path, ed_ibds.collection_data.gen_index_file_path(collection_name, storage_device, data_dir), skip_paths)
+    ed_ibds.file_tree_snapshot.update_index_file(data_path, ed_ibds.path_generator.gen_index_file_path(collection_name, storage_device, data_dir), skip_paths)
 
 
 def scan_storage_device(data_dir, collection_dict, storage_device):
