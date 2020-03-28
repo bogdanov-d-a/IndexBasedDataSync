@@ -64,6 +64,10 @@ def locations_to_storage_devices(locations):
 
 def pick_storage_device(device_list):
     list_ = []
+    dict_ = {}
     for device in device_list:
-        list_.append(device.getName())
-    return device_list[edpu.user_interaction.pick_option('Choose storage device', list_)]
+        if device.isScanAvailable():
+            list_.append(device.getName())
+            dict_[device.getName()] = device
+    list_.sort()
+    return dict_[list_[edpu.user_interaction.pick_option('Choose storage device', list_)]]
