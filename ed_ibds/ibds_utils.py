@@ -40,17 +40,6 @@ def is_same_list(list_):
     return True
 
 
-def find_first_in_list_index(list_, pred):
-    index = 0
-
-    for elem in list_:
-        if pred(elem):
-            return index
-        index += 1
-
-    return -1
-
-
 def path_needs_skip(path, skip_paths):
     for skip_path in skip_paths:
         if re.match(skip_path, SKIP_PATHS_SEPARATOR.join(path)) is not None:
@@ -59,15 +48,14 @@ def path_needs_skip(path, skip_paths):
 
 
 def locations_to_storage_devices(locations):
-    return list(map(lambda x: x.getStorageDevice(), locations))
+    return list(map(lambda location: location.getStorageDevice(), locations))
 
 
 def pick_storage_device(device_list):
-    list_ = []
-    dict_ = {}
-    for device in device_list:
-        if device.isScanAvailable():
-            list_.append(device.getName())
-            dict_[device.getName()] = device
-    list_.sort()
+    ed_ibds.standard_type_assertion.assert_list_pred('device_list', device_list, ed_ibds.storage_device.assert_storage_device)
+
+    scan_devices = list(filter(lambda device: device.isScanAvailable(), device_list))
+    list_ = list(sorted(map(lambda device: device.getName(), scan_devices)))
+    dict_ = { device.getName(): device for device in scan_devices }
+
     return dict_[list_[edpu.user_interaction.pick_option('Choose storage device', list_)]]

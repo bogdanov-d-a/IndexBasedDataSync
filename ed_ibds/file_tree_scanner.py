@@ -8,7 +8,8 @@ EXCLUDE_FILE_NAMES_DEFAULT = ['desktop.ini', 'Thumbs.db', '.hidden', '.nomedia',
 
 def scan(root_path, skip_paths, exclude_file_names=EXCLUDE_FILE_NAMES_DEFAULT):
     ed_ibds.standard_type_assertion.assert_string('root_path', root_path)
-    ed_ibds.standard_type_assertion.assert_list('exclude_file_names', exclude_file_names, ed_ibds.standard_type_assertion.assert_string)
+    ed_ibds.standard_type_assertion.assert_list_pred('skip_paths', skip_paths, ed_ibds.standard_type_assertion.assert_string)
+    ed_ibds.standard_type_assertion.assert_list_pred('exclude_file_names', exclude_file_names, ed_ibds.standard_type_assertion.assert_string)
 
     if not os.path.isdir(root_path):
         raise Exception(root_path + ' does not exist')

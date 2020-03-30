@@ -13,10 +13,7 @@ def _str_from_suffix(obj):
 def gen_index_file_path(collection, suffix, data_dir):
     ed_ibds.standard_type_assertion.assert_string('collection', collection)
 
-    prefix = ''
-    if data_dir is not None:
-        prefix = data_dir + '\\'
-
+    prefix = data_dir + '\\' if data_dir is not None else ''
     return prefix + collection + '-' + _str_from_suffix(suffix) + '.txt'
 
 

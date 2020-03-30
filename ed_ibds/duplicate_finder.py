@@ -1,11 +1,12 @@
-import ed_ibds.file_tree_snapshot
-import ed_ibds.ibds_utils
-import ed_ibds.path_generator
-import ed_ibds.collection_definition
+import ed_ibds
 
 
-def collection_common(data_dir, collection, skip_paths):
-    data = ed_ibds.collection_definition.load_common_data(ed_ibds.path_generator.gen_common_file_path(collection, data_dir))
+def collection_common(data_dir, collection_name, skip_paths):
+    ed_ibds.standard_type_assertion.assert_string('data_dir', data_dir)
+    ed_ibds.standard_type_assertion.assert_string('collection_name', collection_name)
+    ed_ibds.standard_type_assertion.assert_list('skip_paths', skip_paths)
+
+    data = ed_ibds.collection_definition.load_common_data(ed_ibds.path_generator.gen_common_file_path(collection_name, data_dir))
     table = {}
 
     for path, hash_ in data:
@@ -20,8 +21,12 @@ def collection_common(data_dir, collection, skip_paths):
             print(hash_ + ' ' + str(paths))
 
 
-def collection_storage_device(data_dir, collection, storage_device):
-    data = ed_ibds.file_tree_snapshot.load_index(ed_ibds.path_generator.gen_index_file_path(collection, storage_device, data_dir))
+def collection_storage_device(data_dir, collection_name, storage_device):
+    ed_ibds.standard_type_assertion.assert_string('data_dir', data_dir)
+    ed_ibds.standard_type_assertion.assert_string('collection_name', collection_name)
+    ed_ibds.storage_device.assert_storage_device('storage_device', storage_device)
+
+    data = ed_ibds.file_tree_snapshot.load_index(ed_ibds.path_generator.gen_index_file_path(collection_name, storage_device, data_dir))
     table = {}
 
     for path, info in data.getPairList():
@@ -35,5 +40,8 @@ def collection_storage_device(data_dir, collection, storage_device):
 
 
 def collections_common(data_dir, collection_dict):
+    ed_ibds.standard_type_assertion.assert_string('data_dir', data_dir)
+    ed_ibds.standard_type_assertion.assert_dict('collection_dict', collection_dict)
+
     for collection_name, data in ed_ibds.ibds_utils.key_sorted_dict_items(collection_dict):
         collection_common(data_dir, collection_name, data[2])

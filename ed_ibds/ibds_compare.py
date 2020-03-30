@@ -4,6 +4,10 @@ import ed_ibds.ibds_tablegen
 
 
 def multi_indexes(index_list, label_list, complete_locations, name=None):
+    ed_ibds.standard_type_assertion.assert_list_pred('index_list', index_list, ed_ibds.file_tree_snapshot.assert_index)
+    ed_ibds.standard_type_assertion.assert_list_pred('label_list', label_list, ed_ibds.standard_type_assertion.assert_string)
+    ed_ibds.standard_type_assertion.assert_set_pred('complete_locations', complete_locations, ed_ibds.standard_type_assertion.assert_integer)
+
     table = ed_ibds.ibds_tablegen.indexes(index_list)
     complete_locations_list = sorted(list(complete_locations))
 
@@ -27,8 +31,9 @@ def multi_indexes(index_list, label_list, complete_locations, name=None):
 
 
 def multi_index_files(index_file_list, label_list, complete_locations, name=None):
-    index_list = []
-    for index_file in index_file_list:
-        index_list.append(ed_ibds.file_tree_snapshot.load_index(index_file))
+    ed_ibds.standard_type_assertion.assert_list_pred('index_file_list', index_file_list, ed_ibds.standard_type_assertion.assert_string)
+    ed_ibds.standard_type_assertion.assert_list_pred('label_list', label_list, ed_ibds.standard_type_assertion.assert_string)
+    ed_ibds.standard_type_assertion.assert_set_pred('complete_locations', complete_locations, ed_ibds.standard_type_assertion.assert_integer)
 
+    index_list = list(map(lambda index_file: ed_ibds.file_tree_snapshot.load_index(index_file), index_file_list))
     multi_indexes(index_list, label_list, complete_locations, name)

@@ -3,11 +3,31 @@ def assert_string(name, data):
         raise TypeError(name + ' should be string')
 
 
-def assert_list(name, data, assert_elem=lambda name, data: None):
+def assert_list(name, data):
     if type(data) is not list:
         raise TypeError(name + ' should be list')
+
+
+def assert_list_pred(name, data, assert_elem=lambda name, data: None):
+    assert_list(name, data)
     for elem in data:
         assert_elem(name + ' elem', elem)
+
+
+def assert_set(name, data):
+    if type(data) is not set:
+        raise TypeError(name + ' should be set')
+
+
+def assert_set_pred(name, data, assert_elem=lambda name, data: None):
+    assert_set(name, data)
+    for elem in data:
+        assert_elem(name + ' elem', elem)
+
+
+def assert_dict(name, data):
+    if type(data) is not dict:
+        raise TypeError(name + ' should be dict')
 
 
 def assert_integer(name, data):

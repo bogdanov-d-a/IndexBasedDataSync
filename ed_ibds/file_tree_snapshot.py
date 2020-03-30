@@ -65,6 +65,7 @@ class Index:
 
 def create_index(tree_path, skip_paths):
     ed_ibds.standard_type_assertion.assert_string('tree_path', tree_path)
+    ed_ibds.standard_type_assertion.assert_list_pred('skip_paths', skip_paths, ed_ibds.standard_type_assertion.assert_string)
 
     index = Index()
 
@@ -80,6 +81,7 @@ def create_index(tree_path, skip_paths):
 def update_index(old_index, tree_path, skip_paths):
     assert_index('old_index', old_index)
     ed_ibds.standard_type_assertion.assert_string('tree_path', tree_path)
+    ed_ibds.standard_type_assertion.assert_list_pred('skip_paths', skip_paths, ed_ibds.standard_type_assertion.assert_string)
 
     index = Index()
 
@@ -101,39 +103,38 @@ def update_index(old_index, tree_path, skip_paths):
 def load_index(file_path):
     ed_ibds.standard_type_assertion.assert_string('file_path', file_path)
 
-    input_ = codecs.open(file_path, 'r', 'utf-8-sig')
-    data_ = Index()
+    with codecs.open(file_path, 'r', 'utf-8-sig') as input_:
+        data_ = Index()
 
-    for line in input_.readlines():
-        if line[-1] == '\n':
-            line = line[:-1]
-        parts = line.split(' ', 2)
-        if len(parts) != 3:
-            raise Exception('load_index bad format')
-        data_.addData(parts[2], FileInfo(float(parts[0]), parts[1]))
+        for line in input_.readlines():
+            if line[-1] == '\n':
+                line = line[:-1]
+            parts = line.split(' ', 2)
+            if len(parts) != 3:
+                raise Exception('load_index bad format')
+            data_.addData(parts[2], FileInfo(float(parts[0]), parts[1]))
 
-    input_.close()
-    return data_
+        return data_
 
 
 def save_index(index, file_path):
     assert_index('index', index)
     ed_ibds.standard_type_assertion.assert_string('file_path', file_path)
 
-    output = codecs.open(file_path, 'w', 'utf-8-sig')
-    for path, data in index.getPairList():
-        output.write(str(data.getMtime()))
-        output.write(' ')
-        output.write(data.getHash())
-        output.write(' ')
-        output.write(path)
-        output.write('\n')
-    output.close()
+    with codecs.open(file_path, 'w', 'utf-8-sig') as output:
+        for path, data in index.getPairList():
+            output.write(str(data.getMtime()))
+            output.write(' ')
+            output.write(data.getHash())
+            output.write(' ')
+            output.write(path)
+            output.write('\n')
 
 
 def update_index_file(tree_path, index_path, skip_paths):
     ed_ibds.standard_type_assertion.assert_string('tree_path', tree_path)
     ed_ibds.standard_type_assertion.assert_string('index_path', index_path)
+    ed_ibds.standard_type_assertion.assert_list_pred('skip_paths', skip_paths, ed_ibds.standard_type_assertion.assert_string)
 
     if os.path.isfile(index_path):
         old_index = load_index(index_path)
