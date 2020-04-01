@@ -1,12 +1,12 @@
-import ed_ibds.standard_type_assertion
-import ed_ibds.storage_device
+from . import standard_type_assertion
+from . import storage_device
 
 
 class UserData:
     def __init__(self, collection_dict, device_list, data_path):
-        ed_ibds.standard_type_assertion.assert_dict('collection_dict', collection_dict)
-        ed_ibds.standard_type_assertion.assert_list_pred('device_list', device_list, ed_ibds.storage_device.assert_storage_device)
-        ed_ibds.standard_type_assertion.assert_string('data_path', data_path)
+        standard_type_assertion.assert_dict('collection_dict', collection_dict)
+        standard_type_assertion.assert_list_pred('device_list', device_list, storage_device.assert_storage_device)
+        standard_type_assertion.assert_string('data_path', data_path)
 
         self._collection_dict = collection_dict
         self._device_list = device_list

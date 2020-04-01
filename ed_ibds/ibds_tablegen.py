@@ -1,10 +1,10 @@
-import ed_ibds.standard_type_assertion
-import ed_ibds.file_tree_snapshot
-import ed_ibds.ibds_utils
+from . import standard_type_assertion
+from . import file_tree_snapshot
+from . import ibds_utils
 
 
 def indexes(index_list):
-    ed_ibds.standard_type_assertion.assert_list_pred('index_list', index_list, ed_ibds.file_tree_snapshot.assert_index)
+    standard_type_assertion.assert_list_pred('index_list', index_list, file_tree_snapshot.assert_index)
     table = {}
 
     paths = set()
@@ -23,19 +23,19 @@ def indexes(index_list):
 
 
 def index_files(index_file_list):
-    ed_ibds.standard_type_assertion.assert_list_pred('index_file_list', index_file_list, ed_ibds.standard_type_assertion.assert_string)
+    standard_type_assertion.assert_list_pred('index_file_list', index_file_list, standard_type_assertion.assert_string)
 
-    index_list = list(map(lambda path: ed_ibds.file_tree_snapshot.load_index(path), index_file_list))
+    index_list = list(map(lambda path: file_tree_snapshot.load_index(path), index_file_list))
     return indexes(index_list)
 
 
 def get_data_hashes(data):
-    ed_ibds.standard_type_assertion.assert_list('data', data)
+    standard_type_assertion.assert_list('data', data)
     return list(map(lambda x: x.getHash(), filter(lambda x: x is not None, data)))
 
 
 def get_same_hash(data):
-    ed_ibds.standard_type_assertion.assert_list('data', data)
+    standard_type_assertion.assert_list('data', data)
 
     hashes = get_data_hashes(data)
-    return hashes[0] if ed_ibds.ibds_utils.is_same_list(hashes) else None
+    return hashes[0] if ibds_utils.is_same_list(hashes) else None

@@ -1,6 +1,7 @@
 import re
 import edpu.user_interaction
-import ed_ibds.standard_type_assertion
+from . import standard_type_assertion
+from . import storage_device
 
 
 SKIP_PATHS_SEPARATOR = '/'
@@ -12,7 +13,7 @@ def key_sorted_dict_items(dict_):
 
 def print_lists(lists, name=None):
     if name is not None:
-        ed_ibds.standard_type_assertion.assert_string('name', name)
+        standard_type_assertion.assert_string('name', name)
 
     if sum(len(list_[1]) for list_ in lists) > 0:
         if name is not None:
@@ -52,7 +53,7 @@ def locations_to_storage_devices(locations):
 
 
 def pick_storage_device(device_list):
-    ed_ibds.standard_type_assertion.assert_list_pred('device_list', device_list, ed_ibds.storage_device.assert_storage_device)
+    standard_type_assertion.assert_list_pred('device_list', device_list, storage_device.assert_storage_device)
 
     scan_devices = list(filter(lambda device: device.isScanAvailable(), device_list))
     list_ = list(sorted(map(lambda device: device.getName(), scan_devices)))

@@ -1,28 +1,28 @@
 import edpu.storage_finder
-import ed_ibds.path_generator
-import ed_ibds.ibds_utils
-import ed_ibds.standard_type_assertion
-import ed_ibds.file_tree_snapshot
-import ed_ibds.storage_device
+from . import path_generator
+from . import ibds_utils
+from . import standard_type_assertion
+from . import file_tree_snapshot
+from . import storage_device
 
 
-def _scan_collection_storage_device(data_dir, collection_name, storage_device, data_path, skip_paths):
-    ed_ibds.standard_type_assertion.assert_string('collection_name', collection_name)
-    ed_ibds.storage_device.assert_storage_device('storage_device', storage_device)
-    ed_ibds.standard_type_assertion.assert_string('data_path', data_path)
-    ed_ibds.standard_type_assertion.assert_list_pred('skip_paths', skip_paths, ed_ibds.standard_type_assertion.assert_string)
+def _scan_collection_storage_device(data_dir, collection_name, storage_device_, data_path, skip_paths):
+    standard_type_assertion.assert_string('collection_name', collection_name)
+    storage_device.assert_storage_device('storage_device_', storage_device_)
+    standard_type_assertion.assert_string('data_path', data_path)
+    standard_type_assertion.assert_list_pred('skip_paths', skip_paths, standard_type_assertion.assert_string)
 
-    ed_ibds.file_tree_snapshot.update_index_file(data_path, ed_ibds.path_generator.gen_index_file_path(collection_name, storage_device, data_dir), skip_paths)
+    file_tree_snapshot.update_index_file(data_path, path_generator.gen_index_file_path(collection_name, storage_device_, data_dir), skip_paths)
 
 
-def scan_storage_device(data_dir, collection_dict, storage_device):
-    ed_ibds.standard_type_assertion.assert_string('data_dir', data_dir)
-    ed_ibds.standard_type_assertion.assert_dict('collection_dict', collection_dict)
-    ed_ibds.storage_device.assert_storage_device('storage_device', storage_device)
+def scan_storage_device(data_dir, collection_dict, storage_device_):
+    standard_type_assertion.assert_string('data_dir', data_dir)
+    standard_type_assertion.assert_dict('collection_dict', collection_dict)
+    storage_device.assert_storage_device('storage_device_', storage_device_)
 
-    path_prefix = edpu.storage_finder.keep_getting_storage_path(storage_device.getName()) if storage_device.isRemovable() else ''
+    path_prefix = edpu.storage_finder.keep_getting_storage_path(storage_device_.getName()) if storage_device_.isRemovable() else ''
 
-    for collection_name, data in ed_ibds.ibds_utils.key_sorted_dict_items(collection_dict):
+    for collection_name, data in ibds_utils.key_sorted_dict_items(collection_dict):
         for location in data[0]:
-            if location.getStorageDevice().getName() == storage_device.getName():
-                _scan_collection_storage_device(data_dir, collection_name, storage_device, path_prefix + location.getPath(), data[1])
+            if location.getStorageDevice().getName() == storage_device_.getName():
+                _scan_collection_storage_device(data_dir, collection_name, storage_device_, path_prefix + location.getPath(), data[1])

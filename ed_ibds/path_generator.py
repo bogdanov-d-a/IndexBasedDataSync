@@ -1,17 +1,18 @@
-import ed_ibds.standard_type_assertion
+from . import standard_type_assertion
+from . import storage_device
 
 
 def _str_from_suffix(obj):
     if type(obj) is str:
         return obj
-    elif type(obj) is ed_ibds.storage_device.StorageDevice:
+    elif type(obj) is storage_device.StorageDevice:
         return obj.getName()
     else:
         raise Exception('unknown object type')
 
 
 def gen_index_file_path(collection, suffix, data_dir):
-    ed_ibds.standard_type_assertion.assert_string('collection', collection)
+    standard_type_assertion.assert_string('collection', collection)
 
     prefix = data_dir + '\\' if data_dir is not None else ''
     return prefix + collection + '-' + _str_from_suffix(suffix) + '.txt'
