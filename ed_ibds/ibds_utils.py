@@ -1,5 +1,5 @@
 import re
-import edpu.user_interaction
+from edpu import user_interaction
 from . import standard_type_assertion
 from . import storage_device
 
@@ -59,4 +59,4 @@ def pick_storage_device(device_list):
     list_ = list(sorted(map(lambda device: device.getName(), scan_devices)))
     dict_ = { device.getName(): device for device in scan_devices }
 
-    return dict_[list_[edpu.user_interaction.pick_option('Choose storage device', list_)]]
+    return dict_[list_[user_interaction.pick_option('Choose storage device', list_)]]

@@ -1,4 +1,4 @@
-import edpu.storage_finder
+from edpu import storage_finder
 from . import path_generator
 from . import ibds_utils
 from . import standard_type_assertion
@@ -20,7 +20,7 @@ def scan_storage_device(data_dir, collection_dict, storage_device_):
     standard_type_assertion.assert_dict('collection_dict', collection_dict)
     storage_device.assert_storage_device('storage_device_', storage_device_)
 
-    path_prefix = edpu.storage_finder.keep_getting_storage_path(storage_device_.getName()) if storage_device_.isRemovable() else ''
+    path_prefix = storage_finder.keep_getting_storage_path(storage_device_.getName()) if storage_device_.isRemovable() else ''
 
     for collection_name, data in ibds_utils.key_sorted_dict_items(collection_dict):
         for location in data[0]:

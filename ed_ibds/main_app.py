@@ -1,5 +1,5 @@
-import edpu.user_interaction
-import edpu.pause_at_end
+from edpu import user_interaction
+from edpu import pause_at_end
 from . import collection_scanner
 from . import collection_file_set
 from . import collection_compare
@@ -18,7 +18,7 @@ def run(user_data):
             'Check data file set'
         ]
 
-        action = edpu.user_interaction.pick_option('Choose an action', ACTIONS)
+        action = user_interaction.pick_option('Choose an action', ACTIONS)
 
         if action == 0:
             storage_device_ = ibds_utils.pick_storage_device(user_data.getDeviceList())
@@ -39,4 +39,4 @@ def run(user_data):
         else:
             raise Exception('unexpected action')
 
-    edpu.pause_at_end.run(main, 'Program finished successfully')
+    pause_at_end.run(main, 'Program finished successfully')
