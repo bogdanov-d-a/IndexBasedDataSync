@@ -1,5 +1,6 @@
 from . import standard_type_assertion
 from . import storage_device
+import os
 
 
 def _str_from_suffix(obj):
@@ -14,7 +15,7 @@ def _str_from_suffix(obj):
 def gen_index_file_path(collection, suffix, data_dir):
     standard_type_assertion.assert_string('collection', collection)
 
-    prefix = data_dir + '\\' if data_dir is not None else ''
+    prefix = data_dir + os.path.sep if data_dir is not None else ''
     return prefix + collection + '-' + _str_from_suffix(suffix) + '.txt'
 
 
