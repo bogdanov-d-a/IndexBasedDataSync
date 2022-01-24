@@ -7,6 +7,7 @@ from . import storage_device
 
 
 def _scan_collection_storage_device(data_dir, collection_name, storage_device_, data_path, skip_paths):
+    standard_type_assertion.assert_string('data_dir', data_dir)
     standard_type_assertion.assert_string('collection_name', collection_name)
     storage_device.assert_storage_device('storage_device_', storage_device_)
     standard_type_assertion.assert_string('data_path', data_path)
