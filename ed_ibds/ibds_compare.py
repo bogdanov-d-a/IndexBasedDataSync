@@ -38,3 +38,30 @@ def multi_index_files(index_file_list, label_list, complete_locations, name=None
 
     index_list = list(map(lambda index_file: file_tree_snapshot.load_index(index_file), index_file_list))
     multi_indexes(index_list, label_list, complete_locations, name)
+
+
+def multi_indexes_by_hash(index_list, label_list, name=None):
+    standard_type_assertion.assert_list_pred('index_list', index_list, file_tree_snapshot.assert_index)
+    standard_type_assertion.assert_list_pred('label_list', label_list, standard_type_assertion.assert_string)
+
+    table = ibds_tablegen.indexes_by_hash(index_list)
+
+    unique_data = []
+
+    for hash_, data in ibds_utils.key_sorted_dict_items(table):
+        true_count = data.count(True)
+        if true_count == 0:
+            raise Exception('multi_indexes_by_hash true_count == 0')
+        elif true_count == 1:
+            unique_data.append(hash_)
+
+    print_lists = [('Unique data:', unique_data)]
+    ibds_utils.print_lists(print_lists, name)
+
+
+def multi_index_by_hash_files(index_file_list, label_list, name=None):
+    standard_type_assertion.assert_list_pred('index_file_list', index_file_list, standard_type_assertion.assert_string)
+    standard_type_assertion.assert_list_pred('label_list', label_list, standard_type_assertion.assert_string)
+
+    index_list = list(map(lambda index_file: file_tree_snapshot.load_index(index_file), index_file_list))
+    multi_indexes_by_hash(index_list, label_list, name)

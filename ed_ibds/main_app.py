@@ -15,7 +15,8 @@ def run(user_data):
             'Compare all data',
             'Generate collection definitions',
             'Find file duplicates',
-            'Check data file set'
+            'Check data file set',
+            'Find unique data',
         ]
 
         action = user_interaction.pick_option('Choose an action', ACTIONS)
@@ -35,6 +36,9 @@ def run(user_data):
 
         elif action == 4:
             collection_file_set.check_data_file_set(user_data.getDataPath(), user_data.getCollectionDict())
+
+        elif action == 5:
+            collection_compare.collections_by_hash(user_data.getDataPath(), user_data.getCollectionDict())
 
         else:
             raise Exception('unexpected action')

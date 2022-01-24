@@ -29,6 +29,32 @@ def index_files(index_file_list):
     return indexes(index_list)
 
 
+def indexes_by_hash(index_list):
+    standard_type_assertion.assert_list_pred('index_list', index_list, file_tree_snapshot.assert_index)
+    table = {}
+
+    hashes = []
+    for index_main in index_list:
+        hashes_main = set()
+        for _, fileInfo in index_main.getPairList():
+            hashes_main.add(fileInfo.getHash())
+        hashes.append(hashes_main)
+
+    hashes_all = set()
+    for hashes_main in hashes:
+        hashes_all |= hashes_main
+
+    for hash_ in hashes_all:
+        table[hash_] = [False] * len(index_list)
+
+    for hash_ in table.keys():
+        for index_index in range(len(index_list)):
+            if hash_ in hashes[index_index]:
+                table[hash_][index_index] = True
+
+    return table
+
+
 def get_data_hashes(data):
     standard_type_assertion.assert_list('data', data)
     return list(map(lambda x: x.getHash(), filter(lambda x: x is not None, data)))
