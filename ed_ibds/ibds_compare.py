@@ -4,9 +4,8 @@ from . import ibds_utils
 from . import ibds_tablegen
 
 
-def multi_indexes(index_list, label_list, complete_locations, name=None):
+def multi_indexes(index_list, complete_locations, name=None):
     standard_type_assertion.assert_list_pred('index_list', index_list, file_tree_snapshot.assert_index)
-    standard_type_assertion.assert_list_pred('label_list', label_list, standard_type_assertion.assert_string)
     standard_type_assertion.assert_set_pred('complete_locations', complete_locations, standard_type_assertion.assert_integer)
 
     table = ibds_tablegen.indexes(index_list)
@@ -31,18 +30,16 @@ def multi_indexes(index_list, label_list, complete_locations, name=None):
     ibds_utils.print_lists(print_lists, name)
 
 
-def multi_index_files(index_file_list, label_list, complete_locations, name=None):
+def multi_index_files(index_file_list, complete_locations, name=None):
     standard_type_assertion.assert_list_pred('index_file_list', index_file_list, standard_type_assertion.assert_string)
-    standard_type_assertion.assert_list_pred('label_list', label_list, standard_type_assertion.assert_string)
     standard_type_assertion.assert_set_pred('complete_locations', complete_locations, standard_type_assertion.assert_integer)
 
     index_list = list(map(lambda index_file: file_tree_snapshot.load_index(index_file), index_file_list))
-    multi_indexes(index_list, label_list, complete_locations, name)
+    multi_indexes(index_list, complete_locations, name)
 
 
-def multi_indexes_by_hash(index_list, label_list, name=None):
+def multi_indexes_by_hash(index_list, name=None):
     standard_type_assertion.assert_list_pred('index_list', index_list, file_tree_snapshot.assert_index)
-    standard_type_assertion.assert_list_pred('label_list', label_list, standard_type_assertion.assert_string)
 
     table = ibds_tablegen.indexes_by_hash(index_list)
 
@@ -59,9 +56,8 @@ def multi_indexes_by_hash(index_list, label_list, name=None):
     ibds_utils.print_lists(print_lists, name)
 
 
-def multi_index_by_hash_files(index_file_list, label_list, name=None):
+def multi_index_by_hash_files(index_file_list, name=None):
     standard_type_assertion.assert_list_pred('index_file_list', index_file_list, standard_type_assertion.assert_string)
-    standard_type_assertion.assert_list_pred('label_list', label_list, standard_type_assertion.assert_string)
 
     index_list = list(map(lambda index_file: file_tree_snapshot.load_index(index_file), index_file_list))
-    multi_indexes_by_hash(index_list, label_list, name)
+    multi_indexes_by_hash(index_list, name)

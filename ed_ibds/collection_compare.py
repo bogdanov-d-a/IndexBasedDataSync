@@ -12,8 +12,7 @@ def multi_storage_devices_of_collection(data_dir, collection_name, storage_devic
     standard_type_assertion.assert_set_pred('complete_storage_device_indices', complete_storage_device_indices, standard_type_assertion.assert_integer)
 
     paths = list(map(lambda storage_device_: path_generator.gen_index_file_path(collection_name, storage_device_, data_dir), storage_devices))
-    labels = list(map(lambda storage_device_: storage_device_.getName(), storage_devices))
-    ibds_compare.multi_index_files(paths, labels, complete_storage_device_indices, collection_name)
+    ibds_compare.multi_index_files(paths, complete_storage_device_indices, collection_name)
 
 
 def multi_storage_devices_of_collection_by_hash(data_dir, collection_name, storage_devices):
@@ -22,8 +21,7 @@ def multi_storage_devices_of_collection_by_hash(data_dir, collection_name, stora
     standard_type_assertion.assert_list_pred('storage_devices', storage_devices, storage_device.assert_storage_device)
 
     paths = list(map(lambda storage_device_: path_generator.gen_index_file_path(collection_name, storage_device_, data_dir), storage_devices))
-    labels = list(map(lambda storage_device_: storage_device_.getName(), storage_devices))
-    ibds_compare.multi_index_by_hash_files(paths, labels, collection_name)
+    ibds_compare.multi_index_by_hash_files(paths, collection_name)
 
 
 def collection(data_dir, collection_dict, collection_name):
