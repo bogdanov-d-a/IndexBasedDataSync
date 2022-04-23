@@ -1,8 +1,8 @@
 import os
 import codecs
+from edpu import file_hashing
 from . import standard_type_assertion
 from . import file_tree_scanner
-from . import hash_facade
 from . import ibds_utils
 
 
@@ -73,7 +73,7 @@ def create_index(tree_path, skip_paths):
         rel_path_key = INDEX_PATH_SEPARATOR.join(rel_path)
         abs_path = os.path.join(tree_path, os.sep.join(rel_path))
         print('Calculating hash for ' + rel_path_key)
-        index.addData(INDEX_PATH_SEPARATOR.join(rel_path), FileInfo(os.path.getmtime(abs_path), hash_facade.sha1(abs_path)))
+        index.addData(INDEX_PATH_SEPARATOR.join(rel_path), FileInfo(os.path.getmtime(abs_path), file_hashing.sha1_file(abs_path)))
 
     return index
 
@@ -94,7 +94,7 @@ def update_index(old_index, tree_path, skip_paths):
             hash_ = old_index.getData(rel_path_key).getHash()
         else:
             print('Calculating hash for ' + rel_path_key)
-            hash_ = hash_facade.sha1(abs_path)
+            hash_ = file_hashing.sha1_file(abs_path)
         index.addData(rel_path_key, FileInfo(mdate, hash_))
 
     return index
