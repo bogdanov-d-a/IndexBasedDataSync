@@ -43,4 +43,4 @@ collection_dict = {
 
 
 data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
-main_app.run(UserData(collection_dict, devices, data_path))
+main_app.run(UserData(collection_dict, devices, data_path, True))

@@ -78,23 +78,32 @@ def create_index(tree_path, skip_paths):
     return index
 
 
-def update_index(old_index, tree_path, skip_paths):
+def update_index(old_index, tree_path, skip_paths, skip_mtime):
     assert_index('old_index', old_index)
     standard_type_assertion.assert_string('tree_path', tree_path)
     standard_type_assertion.assert_list_pred('skip_paths', skip_paths, standard_type_assertion.assert_string)
+    standard_type_assertion.assert_bool('skip_mtime', skip_mtime)
 
     index = Index()
 
     for rel_path in file_tree_scanner.scan(tree_path, skip_paths):
         abs_path = os.path.join(tree_path, os.sep.join(rel_path))
-        mdate = os.path.getmtime(abs_path)
+
+        if not skip_mtime:
+            mdate = os.path.getmtime(abs_path)
+
         rel_path_key = INDEX_PATH_SEPARATOR.join(rel_path)
 
-        if (old_index.hasData(rel_path_key)) and (old_index.getData(rel_path_key).getMtime() == mdate):
+        if old_index.hasData(rel_path_key) and (skip_mtime or old_index.getData(rel_path_key).getMtime() == mdate):
             hash_ = old_index.getData(rel_path_key).getHash()
+            if skip_mtime:
+                mdate = old_index.getData(rel_path_key).getMtime()
         else:
             print('Calculating hash for ' + rel_path_key)
             hash_ = file_hashing.sha1_file(abs_path)
+            if skip_mtime:
+                mdate = os.path.getmtime(abs_path)
+
         index.addData(rel_path_key, FileInfo(mdate, hash_))
 
     return index
@@ -131,14 +140,15 @@ def save_index(index, file_path):
             output.write('\n')
 
 
-def update_index_file(tree_path, index_path, skip_paths):
+def update_index_file(tree_path, index_path, skip_paths, skip_mtime):
     standard_type_assertion.assert_string('tree_path', tree_path)
     standard_type_assertion.assert_string('index_path', index_path)
     standard_type_assertion.assert_list_pred('skip_paths', skip_paths, standard_type_assertion.assert_string)
+    standard_type_assertion.assert_bool('skip_mtime', skip_mtime)
 
     if os.path.isfile(index_path):
         old_index = load_index(index_path)
-        new_index = update_index(old_index, tree_path, skip_paths)
+        new_index = update_index(old_index, tree_path, skip_paths, skip_mtime)
     else:
         new_index = create_index(tree_path, skip_paths)
     save_index(new_index, index_path)

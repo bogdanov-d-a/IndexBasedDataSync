@@ -23,7 +23,7 @@ def run(user_data):
 
         if action == 0:
             storage_device_ = ibds_utils.pick_storage_device(user_data.getDeviceList())
-            collection_scanner.scan_storage_device(user_data.getDataPath(), user_data.getCollectionDict(), storage_device_)
+            collection_scanner.scan_storage_device(user_data.getDataPath(), user_data.getCollectionDict(), storage_device_, user_data.getSkipMtime())
 
         elif action == 1:
             collection_compare.collections(user_data.getDataPath(), user_data.getCollectionDict())
