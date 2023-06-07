@@ -6,7 +6,7 @@ from . import path_generator
 from . import storage_device
 
 
-def collection_common(data_dir, collection_name, skip_paths):
+def _collection_common(data_dir, collection_name, skip_paths):
     standard_type_assertion.assert_string('data_dir', data_dir)
     standard_type_assertion.assert_string('collection_name', collection_name)
     standard_type_assertion.assert_list('skip_paths', skip_paths)
@@ -26,7 +26,7 @@ def collection_common(data_dir, collection_name, skip_paths):
             print(hash_ + ' ' + str(paths))
 
 
-def collection_storage_device(data_dir, collection_name, storage_device_):
+def _collection_storage_device(data_dir, collection_name, storage_device_):
     standard_type_assertion.assert_string('data_dir', data_dir)
     standard_type_assertion.assert_string('collection_name', collection_name)
     storage_device.assert_storage_device('storage_device_', storage_device_)
@@ -49,4 +49,4 @@ def collections_common(data_dir, collection_dict):
     standard_type_assertion.assert_dict('collection_dict', collection_dict)
 
     for collection_name, data in ibds_utils.key_sorted_dict_items(collection_dict):
-        collection_common(data_dir, collection_name, data[2])
+        _collection_common(data_dir, collection_name, data[2])

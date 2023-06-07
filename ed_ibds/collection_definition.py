@@ -45,7 +45,7 @@ def save_hashset_data(hashset_data, file_path):
             output.write('\n')
 
 
-def generate_collection_definition(data_dir, collection_dict, collection_name):
+def _generate_collection_definition(data_dir, collection_dict, collection_name):
     standard_type_assertion.assert_string('data_dir', data_dir)
     standard_type_assertion.assert_dict('collection_dict', collection_dict)
     standard_type_assertion.assert_string('collection_name', collection_name)
@@ -68,4 +68,4 @@ def generate_collections_definition(data_dir, collection_dict):
     standard_type_assertion.assert_dict('collection_dict', collection_dict)
 
     for collection_name, _ in ibds_utils.key_sorted_dict_items(collection_dict):
-        generate_collection_definition(data_dir, collection_dict, collection_name)
+        _generate_collection_definition(data_dir, collection_dict, collection_name)

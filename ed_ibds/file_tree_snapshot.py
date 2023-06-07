@@ -63,7 +63,7 @@ class Index:
         return set(self._data.keys())
 
 
-def create_index(tree_path, skip_paths):
+def _create_index(tree_path, skip_paths):
     standard_type_assertion.assert_string('tree_path', tree_path)
     standard_type_assertion.assert_list_pred('skip_paths', skip_paths, standard_type_assertion.assert_string)
 
@@ -78,7 +78,7 @@ def create_index(tree_path, skip_paths):
     return index
 
 
-def update_index(old_index, tree_path, skip_paths, skip_mtime):
+def _update_index(old_index, tree_path, skip_paths, skip_mtime):
     assert_index('old_index', old_index)
     standard_type_assertion.assert_string('tree_path', tree_path)
     standard_type_assertion.assert_list_pred('skip_paths', skip_paths, standard_type_assertion.assert_string)
@@ -148,7 +148,7 @@ def update_index_file(tree_path, index_path, skip_paths, skip_mtime):
 
     if os.path.isfile(index_path):
         old_index = load_index(index_path)
-        new_index = update_index(old_index, tree_path, skip_paths, skip_mtime)
+        new_index = _update_index(old_index, tree_path, skip_paths, skip_mtime)
     else:
-        new_index = create_index(tree_path, skip_paths)
+        new_index = _create_index(tree_path, skip_paths)
     save_index(new_index, index_path)

@@ -4,7 +4,7 @@ from . import ibds_utils
 from . import ibds_tablegen
 
 
-def multi_indexes(index_list, complete_locations, name=None):
+def _multi_indexes(index_list, complete_locations, name=None):
     standard_type_assertion.assert_list_pred('index_list', index_list, file_tree_snapshot.assert_index)
     standard_type_assertion.assert_set_pred('complete_locations', complete_locations, standard_type_assertion.assert_integer)
 
@@ -35,10 +35,10 @@ def multi_index_files(index_file_list, complete_locations, name=None):
     standard_type_assertion.assert_set_pred('complete_locations', complete_locations, standard_type_assertion.assert_integer)
 
     index_list = list(map(lambda index_file: file_tree_snapshot.load_index(index_file), index_file_list))
-    multi_indexes(index_list, complete_locations, name)
+    _multi_indexes(index_list, complete_locations, name)
 
 
-def multi_indexes_by_hash(index_list, name=None):
+def _multi_indexes_by_hash(index_list, name=None):
     standard_type_assertion.assert_list_pred('index_list', index_list, file_tree_snapshot.assert_index)
 
     table = ibds_tablegen.indexes_by_hash(index_list)
@@ -48,7 +48,7 @@ def multi_indexes_by_hash(index_list, name=None):
     for hash_, data in ibds_utils.key_sorted_dict_items(table):
         true_count = data.count(True)
         if true_count == 0:
-            raise Exception('multi_indexes_by_hash true_count == 0')
+            raise Exception('_multi_indexes_by_hash true_count == 0')
         elif true_count == 1:
             unique_data.append(hash_)
 
@@ -60,4 +60,4 @@ def multi_index_by_hash_files(index_file_list, name=None):
     standard_type_assertion.assert_list_pred('index_file_list', index_file_list, standard_type_assertion.assert_string)
 
     index_list = list(map(lambda index_file: file_tree_snapshot.load_index(index_file), index_file_list))
-    multi_indexes_by_hash(index_list, name)
+    _multi_indexes_by_hash(index_list, name)
