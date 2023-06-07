@@ -26,7 +26,7 @@ def run(user_data):
             collection_scanner.scan_storage_device(user_data.getDataPath(), user_data.getCollectionDict(), storage_device_, user_data.getSkipMtime())
 
         elif action == 1:
-            collection_compare.collections(user_data.getDataPath(), user_data.getCollectionDict())
+            collection_compare.collections(user_data.getDataPath(), user_data.getCollectionDict(), user_data.getCompareOnlyAvailable())
 
         elif action == 2:
             collection_definition.generate_collections_definition(user_data.getDataPath(), user_data.getCollectionDict())

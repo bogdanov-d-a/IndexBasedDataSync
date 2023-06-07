@@ -3,16 +3,18 @@ from . import storage_device
 
 
 class UserData:
-    def __init__(self, collection_dict, device_list, data_path, skip_mtime):
+    def __init__(self, collection_dict, device_list, data_path, skip_mtime, compare_only_available):
         standard_type_assertion.assert_dict('collection_dict', collection_dict)
         standard_type_assertion.assert_list_pred('device_list', device_list, storage_device.assert_storage_device)
         standard_type_assertion.assert_string('data_path', data_path)
         standard_type_assertion.assert_bool('skip_mtime', skip_mtime)
+        standard_type_assertion.assert_bool('compare_only_available', compare_only_available)
 
         self._collection_dict = collection_dict
         self._device_list = device_list
         self._data_path = data_path
         self._skip_mtime = skip_mtime
+        self._compare_only_available = compare_only_available
 
     def getCollectionDict(self):
         return self._collection_dict
@@ -25,3 +27,6 @@ class UserData:
 
     def getSkipMtime(self):
         return self._skip_mtime
+
+    def getCompareOnlyAvailable(self):
+        return self._compare_only_available

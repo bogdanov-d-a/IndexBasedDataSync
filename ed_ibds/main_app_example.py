@@ -1,4 +1,5 @@
 from edpu import host_alias
+from edpu import storage_finder
 from ed_ibds.storage_device import StorageDevice
 from ed_ibds.location import Location
 from ed_ibds.user_data import UserData
@@ -15,11 +16,12 @@ _DEVICES_REMOVABLE = set([_USBFlash])
 
 
 host_alias_ = host_alias.get()
+all_storage = storage_finder.find_all_storage()
 
 def create_device(name):
     if name not in _DEVICES:
         raise Exception('Bad device name')
-    return StorageDevice(name, name in _DEVICES_REMOVABLE, name in _DEVICES_REMOVABLE or name == host_alias_)
+    return StorageDevice(name, name in _DEVICES_REMOVABLE, (name in _DEVICES_REMOVABLE and name in all_storage) or name == host_alias_)
 
 devices = []
 for name in _DEVICES:
@@ -43,4 +45,4 @@ collection_dict = {
 
 
 data_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'data')
-main_app.run(UserData(collection_dict, devices, data_path, True))
+main_app.run(UserData(collection_dict, devices, data_path, True, True))
