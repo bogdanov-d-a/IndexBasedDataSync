@@ -43,4 +43,4 @@ def run(user_data):
         else:
             raise Exception('unexpected action')
 
-    pause_at_end.run(main, 'Program finished successfully')
+    pause_at_end.run(main, 'Program completed successfully')
