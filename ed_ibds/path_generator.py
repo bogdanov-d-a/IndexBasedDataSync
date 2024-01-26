@@ -3,25 +3,23 @@ from . import storage_device
 import os
 
 
-def _str_from_suffix(obj):
-    if type(obj) is str:
-        return obj
-    elif type(obj) is storage_device.StorageDevice:
-        return obj.getName()
-    else:
-        raise Exception('unknown object type')
-
-
-def gen_index_file_path(collection, suffix, data_dir):
-    standard_type_assertion.assert_string('collection', collection)
+def _gen_impl(data_dir, infixes):
+    standard_type_assertion.assert_list_pred('infixes', infixes, standard_type_assertion.assert_string)
 
     prefix = data_dir + os.path.sep if data_dir is not None else ''
-    return prefix + collection + '-' + _str_from_suffix(suffix) + '.txt'
+    return prefix + '-'.join(infixes) + '.txt'
+
+
+def gen_index_file_path(collection, storage_device_, data_dir):
+    standard_type_assertion.assert_string('collection', collection)
+    storage_device.assert_storage_device('storage_device_', storage_device_)
+
+    return _gen_impl(data_dir, [collection, storage_device_.getName()])
 
 
 def gen_common_file_path(collection, data_dir):
-    return gen_index_file_path(collection, 'Common', data_dir)
+    return _gen_impl(data_dir, [collection, 'Common'])
 
 
 def gen_hashset_file_path(collection, data_dir):
-    return gen_index_file_path(collection, 'Hashset', data_dir)
+    return _gen_impl(data_dir, [collection, 'Hashset'])
