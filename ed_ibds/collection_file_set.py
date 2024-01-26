@@ -11,6 +11,7 @@ def generate_target_file_list(collection_dict):
     for name, data in collection_dict.items():
         for location in data[0]:
             list_.append(path_generator.gen_index_file_path(name, location.getStorageDevice(), None))
+            list_.append(path_generator.gen_hashset_file_path(name, None, location.getStorageDevice()))
         list_.append(path_generator.gen_common_file_path(name, None))
         list_.append(path_generator.gen_hashset_file_path(name, None))
 

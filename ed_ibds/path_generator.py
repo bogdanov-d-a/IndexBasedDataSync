@@ -21,5 +21,10 @@ def gen_common_file_path(collection, data_dir):
     return _gen_impl(data_dir, [collection, 'Common'])
 
 
-def gen_hashset_file_path(collection, data_dir):
-    return _gen_impl(data_dir, [collection, 'Hashset'])
+def gen_hashset_file_path(collection, data_dir, storage_device_=None):
+    def_ = [collection, 'Hashset']
+
+    if storage_device_ is not None:
+        def_.append(storage_device_.getName())
+
+    return _gen_impl(data_dir, def_)

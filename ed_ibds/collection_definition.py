@@ -51,16 +51,36 @@ def _generate_collection_definition(data_dir, collection_dict, collection_name):
     standard_type_assertion.assert_string('collection_name', collection_name)
 
     locations = collection_dict[collection_name][0]
+    storage_devices = ibds_utils.locations_to_storage_devices(locations)
 
     common_data = []
-    table = collection_tablegen.multi(data_dir, collection_name, ibds_utils.locations_to_storage_devices(locations))
+    table = collection_tablegen.multi(data_dir, collection_name, storage_devices)
+
     for path, data in ibds_utils.key_sorted_dict_items(table):
         for hash_ in sorted(list(set(ibds_tablegen.get_data_hashes(data)))):
             common_data.append((path, hash_))
+
     save_common_data(common_data, path_generator.gen_common_file_path(collection_name, data_dir))
 
     hashset = { hash_ for _, hash_ in common_data }
     save_hashset_data(hashset, path_generator.gen_hashset_file_path(collection_name, data_dir))
+
+    hash_table = []
+
+    for _ in range(len(storage_devices)):
+        hash_table.append(set())
+
+    for path, data in ibds_utils.key_sorted_dict_items(table):
+        hashes = ibds_tablegen.get_data_hashes(data, True)
+        for hashes_index in range(len(hashes)):
+            hash_ = hashes[hashes_index]
+            if hash_ is not None:
+                hash_table[hashes_index].add(hash_)
+
+    for hash_table_index in range(len(hash_table)):
+        hash_table_item = hash_table[hash_table_index]
+        storage_device_ = storage_devices[hash_table_index]
+        save_hashset_data(hash_table_item, path_generator.gen_hashset_file_path(collection_name, data_dir, storage_device_))
 
 
 def generate_collections_definition(data_dir, collection_dict):

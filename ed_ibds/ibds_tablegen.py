@@ -55,9 +55,9 @@ def indexes_by_hash(index_list):
     return table
 
 
-def get_data_hashes(data):
+def get_data_hashes(data, keep_none=False):
     standard_type_assertion.assert_list('data', data)
-    return list(map(lambda x: x.getHash(), filter(lambda x: x is not None, data)))
+    return list(map(lambda x: x.getHash() if x is not None else None, filter(lambda x: keep_none or x is not None, data)))
 
 
 def get_same_hash(data):
