@@ -2,7 +2,7 @@ import codecs
 from typeguard import typechecked
 from typing import Optional
 from . import file_tree_snapshot
-from .user_data import CollectionDict
+from .user_data import CollectionDict, COLLECTION_VALUE_LOCATIONS
 from . import ibds_utils
 from . import collection_tablegen
 from . import ibds_tablegen
@@ -45,7 +45,7 @@ def save_hashset_data(hashset_data: set[str], file_path: str) -> None:
 
 @typechecked
 def _generate_collection_definition(data_dir: str, collection_dict: CollectionDict, collection_name: str) -> None:
-    locations = collection_dict[collection_name][0]
+    locations = collection_dict[collection_name][COLLECTION_VALUE_LOCATIONS]
     storage_devices = ibds_utils.locations_to_storage_devices(locations)
 
     common_data: list[tuple[str, str]] = []

@@ -1,5 +1,5 @@
 from typeguard import typechecked
-from .user_data import CollectionDict, CollectionList
+from .user_data import CollectionDict, CollectionList, COLLECTION_VALUE_LOCATIONS, COLLECTION_VALUE_SCAN_SKIP_PATHS
 from edpu import storage_finder
 from . import path_generator
 from . import ibds_utils
@@ -18,6 +18,6 @@ def scan_storage_device(data_dir: str, collection_dict: CollectionDict, storage_
 
     collection_dict_items: CollectionList = ibds_utils.key_sorted_dict_items(collection_dict)
     for collection_name, data in collection_dict_items:
-        for location in data[0]:
+        for location in data[COLLECTION_VALUE_LOCATIONS]:
             if location.getStorageDevice().getName() == storage_device_.getName():
-                _scan_collection_storage_device(data_dir, collection_name, storage_device_, path_prefix + location.getPath(), data[1], skip_mtime)
+                _scan_collection_storage_device(data_dir, collection_name, storage_device_, path_prefix + location.getPath(), data[COLLECTION_VALUE_SCAN_SKIP_PATHS], skip_mtime)

@@ -1,5 +1,5 @@
 from typeguard import typechecked
-from .user_data import CollectionDict
+from .user_data import CollectionDict, COLLECTION_VALUE_LOCATIONS
 from . import ibds_compare
 from . import ibds_utils
 from . import path_generator
@@ -25,14 +25,14 @@ def _multi_storage_devices_of_collection_by_hash(data_dir: str, collection_name:
 
 @typechecked
 def _collection(data_dir: str, collection_dict: CollectionDict, collection_name: str, only_available: bool) -> None:
-    locations = collection_dict[collection_name][0]
+    locations = collection_dict[collection_name][COLLECTION_VALUE_LOCATIONS]
     complete_location_indices = { index for _, index in filter(lambda elem: elem[0].isComplete() and (not only_available or elem[0].getStorageDevice().isScanAvailable()), zip(locations, range(len(locations)))) }
     _multi_storage_devices_of_collection(data_dir, collection_name, ibds_utils.locations_to_storage_devices(locations), complete_location_indices)
 
 
 @typechecked
 def _collection_by_hash(data_dir: str, collection_dict: CollectionDict, collection_name: str) -> None:
-    locations = collection_dict[collection_name][0]
+    locations = collection_dict[collection_name][COLLECTION_VALUE_LOCATIONS]
     _multi_storage_devices_of_collection_by_hash(data_dir, collection_name, ibds_utils.locations_to_storage_devices(locations))
 
 

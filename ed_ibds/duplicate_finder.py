@@ -1,5 +1,5 @@
 from typeguard import typechecked
-from .user_data import CollectionDict, CollectionList
+from .user_data import CollectionDict, CollectionList, COLLECTION_VALUE_DUPLICATE_SKIP_PATHS
 from . import collection_definition
 from . import ibds_utils
 from . import file_tree_snapshot
@@ -45,4 +45,4 @@ def _collection_storage_device(data_dir: str, collection_name: str, storage_devi
 def collections_common(data_dir: str, collection_dict: CollectionDict) -> None:
     collection_dict_items: CollectionList = ibds_utils.key_sorted_dict_items(collection_dict)
     for collection_name, data in collection_dict_items:
-        _collection_common(data_dir, collection_name, data[2])
+        _collection_common(data_dir, collection_name, data[COLLECTION_VALUE_DUPLICATE_SKIP_PATHS])

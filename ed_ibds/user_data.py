@@ -4,6 +4,11 @@ from . import location
 from . import storage_device
 
 
+COLLECTION_VALUE_LOCATIONS = 0
+COLLECTION_VALUE_SCAN_SKIP_PATHS = 1
+COLLECTION_VALUE_DUPLICATE_SKIP_PATHS = 2
+
+
 CollectionValue = tuple[list[location.Location], list[str], list[str]]
 CollectionDict = dict[str, CollectionValue]
 CollectionList = list[tuple[str, CollectionValue]]
