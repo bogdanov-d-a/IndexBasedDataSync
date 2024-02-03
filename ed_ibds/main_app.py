@@ -1,3 +1,4 @@
+from typing import Callable
 from edpu import user_interaction
 from edpu import pause_at_end
 from . import collection_scanner
@@ -11,37 +12,20 @@ from . import user_data
 
 def run(user_data: user_data.UserData) -> None:
     def main() -> None:
-        ACTIONS = [
-            'Scan location',
-            'Compare all data',
-            'Generate collection definitions',
-            'Find file duplicates',
-            'Check data file set',
-            'Find unique data',
-        ]
-
-        action = user_interaction.pick_option('Choose an action', ACTIONS)
-
-        if action == 0:
+        def scan_storage_device() -> None:
             storage_device_ = ibds_utils.pick_storage_device(user_data.getDeviceList())
             collection_scanner.scan_storage_device(user_data.getDataPath(), user_data.getCollectionDict(), storage_device_, user_data.getSkipMtime())
 
-        elif action == 1:
-            collection_compare.collections(user_data.getDataPath(), user_data.getCollectionDict(), user_data.getCompareOnlyAvailable())
+        actions: list[tuple[str, str, Callable[[], None]]] = [
+            ('s', 'Scan location', scan_storage_device),
+            ('c', 'Compare all data', lambda: collection_compare.collections(user_data.getDataPath(), user_data.getCollectionDict(), user_data.getCompareOnlyAvailable())),
+            ('g', 'Generate collection definitions', lambda: collection_definition.generate_collections_definition(user_data.getDataPath(), user_data.getCollectionDict())),
+            ('d', 'Find file duplicates', lambda: duplicate_finder.collections_common(user_data.getDataPath(), user_data.getCollectionDict())),
+            ('f', 'Check data file set', lambda: collection_file_set.check_data_file_set(user_data.getDataPath(), user_data.getCollectionDict())),
+            ('u', 'Find unique data', lambda: collection_compare.collections_by_hash(user_data.getDataPath(), user_data.getCollectionDict())),
+        ]
 
-        elif action == 2:
-            collection_definition.generate_collections_definition(user_data.getDataPath(), user_data.getCollectionDict())
-
-        elif action == 3:
-            duplicate_finder.collections_common(user_data.getDataPath(), user_data.getCollectionDict())
-
-        elif action == 4:
-            collection_file_set.check_data_file_set(user_data.getDataPath(), user_data.getCollectionDict())
-
-        elif action == 5:
-            collection_compare.collections_by_hash(user_data.getDataPath(), user_data.getCollectionDict())
-
-        else:
-            raise Exception('unexpected action')
+        action: Callable[[], None] = user_interaction.pick_str_option_ex('Choose an action', actions)
+        action()
 
     pause_at_end.run(main, 'Program completed successfully')
