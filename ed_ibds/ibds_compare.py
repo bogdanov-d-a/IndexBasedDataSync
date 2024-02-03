@@ -1,20 +1,20 @@
-from . import standard_type_assertion
+from typeguard import typechecked
+from typing import Optional
 from . import file_tree_snapshot
 from . import ibds_utils
 from . import ibds_tablegen
 
 
-def _multi_indexes(index_list, complete_locations, name=None):
-    standard_type_assertion.assert_list_pred('index_list', index_list, file_tree_snapshot.assert_index)
-    standard_type_assertion.assert_set_pred('complete_locations', complete_locations, standard_type_assertion.assert_integer)
-
+@typechecked
+def _multi_indexes(index_list: list[file_tree_snapshot.Index], complete_locations: set[int], name: Optional[str]=None) -> None:
     table = ibds_tablegen.indexes(index_list)
     complete_locations_list = sorted(list(complete_locations))
 
-    diff_data = []
-    incomplete_location = []
+    diff_data: list[str] = []
+    incomplete_location: list[str] = []
 
-    for path, data in ibds_utils.key_sorted_dict_items(table):
+    table_items: list[tuple[str, list[Optional[file_tree_snapshot.FileInfo]]]] = ibds_utils.key_sorted_dict_items(table)
+    for path, data in table_items:
         if (ibds_tablegen.get_same_hash(data) is None):
             diff_data.append(path)
 
@@ -26,38 +26,35 @@ def _multi_indexes(index_list, complete_locations, name=None):
         if incomplete_count != 0:
             incomplete_location.append(path)
 
-    print_lists = [('Different data:', diff_data), ('Missing from complete location:', incomplete_location)]
+    print_lists: list[tuple[str, list[str]]] = [('Different data:', diff_data), ('Missing from complete location:', incomplete_location)]
     ibds_utils.print_lists(print_lists, name)
 
 
-def multi_index_files(index_file_list, complete_locations, name=None):
-    standard_type_assertion.assert_list_pred('index_file_list', index_file_list, standard_type_assertion.assert_string)
-    standard_type_assertion.assert_set_pred('complete_locations', complete_locations, standard_type_assertion.assert_integer)
-
+@typechecked
+def multi_index_files(index_file_list: list[str], complete_locations: set[int], name: Optional[str]=None) -> None:
     index_list = list(map(lambda index_file: file_tree_snapshot.load_index(index_file), index_file_list))
     _multi_indexes(index_list, complete_locations, name)
 
 
-def _multi_indexes_by_hash(index_list, name=None):
-    standard_type_assertion.assert_list_pred('index_list', index_list, file_tree_snapshot.assert_index)
-
+@typechecked
+def _multi_indexes_by_hash(index_list: list[file_tree_snapshot.Index], name: Optional[str]=None) -> None:
     table = ibds_tablegen.indexes_by_hash(index_list)
 
-    unique_data = []
+    unique_data: list[str] = []
 
-    for hash_, data in ibds_utils.key_sorted_dict_items(table):
+    table_items: list[tuple[str, list[bool]]] = ibds_utils.key_sorted_dict_items(table)
+    for hash_, data in table_items:
         true_count = data.count(True)
         if true_count == 0:
             raise Exception('_multi_indexes_by_hash true_count == 0')
         elif true_count == 1:
             unique_data.append(hash_)
 
-    print_lists = [('Unique data:', unique_data)]
+    print_lists: list[tuple[str, list[str]]] = [('Unique data:', unique_data)]
     ibds_utils.print_lists(print_lists, name)
 
 
-def multi_index_by_hash_files(index_file_list, name=None):
-    standard_type_assertion.assert_list_pred('index_file_list', index_file_list, standard_type_assertion.assert_string)
-
+@typechecked
+def multi_index_by_hash_files(index_file_list: list[str], name: Optional[str]=None) -> None:
     index_list = list(map(lambda index_file: file_tree_snapshot.load_index(index_file), index_file_list))
     _multi_indexes_by_hash(index_list, name)

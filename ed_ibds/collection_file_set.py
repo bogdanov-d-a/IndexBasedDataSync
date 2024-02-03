@@ -1,12 +1,13 @@
 import os
+from typeguard import typechecked
+from .user_data import CollectionDict
 from . import ibds_utils
 from . import path_generator
-from . import standard_type_assertion
 
 
-def generate_target_file_list(collection_dict):
-    standard_type_assertion.assert_dict('collection_dict', collection_dict)
-    list_ = []
+@typechecked
+def generate_target_file_list(collection_dict: CollectionDict) -> list[str]:
+    list_: list[str] = []
 
     for name, data in collection_dict.items():
         for location in data[0]:
@@ -18,15 +19,15 @@ def generate_target_file_list(collection_dict):
     return list_
 
 
-def generate_actual_file_list(data_dir):
-    standard_type_assertion.assert_string('data_dir', data_dir)
+@typechecked
+def generate_actual_file_list(data_dir: str) -> list[str]:
     return os.listdir(data_dir)
 
 
-def check_data_file_set(data_dir, collection_dict):
-    standard_type_assertion.assert_string('data_dir', data_dir)
-    standard_type_assertion.assert_dict('collection_dict', collection_dict)
-
+@typechecked
+def check_data_file_set(data_dir: str, collection_dict: CollectionDict) -> None:
     target = set(generate_target_file_list(collection_dict))
     actual = set(generate_actual_file_list(data_dir))
-    ibds_utils.print_lists([['Odd', actual - target], ['Missing', target - actual]])
+
+    print_lists: list[tuple[str, list[str]]] = [('Odd', sorted(actual - target)), ('Missing', sorted(target - actual))]
+    ibds_utils.print_lists(print_lists)
