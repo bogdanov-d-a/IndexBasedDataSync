@@ -1,5 +1,4 @@
 import codecs
-from typeguard import typechecked
 from typing import Optional
 from . import file_tree_snapshot
 from .user_data import CollectionDict, COLLECTION_VALUE_LOCATIONS
@@ -9,7 +8,6 @@ from . import ibds_tablegen
 from . import path_generator
 
 
-@typechecked
 def save_common_data(common_data: list[tuple[str, str]], file_path: str) -> None:
     with codecs.open(file_path, 'w', 'utf-8-sig') as output:
         for path, hash_ in common_data:
@@ -19,7 +17,6 @@ def save_common_data(common_data: list[tuple[str, str]], file_path: str) -> None
             output.write('\n')
 
 
-@typechecked
 def load_common_data(file_path: str) -> list[tuple[str, str]]:
     with codecs.open(file_path, 'r', 'utf-8-sig') as input_:
         data_: list[tuple[str, str]] = []
@@ -35,7 +32,6 @@ def load_common_data(file_path: str) -> list[tuple[str, str]]:
         return data_
 
 
-@typechecked
 def save_hashset_data(hashset_data: set[str], file_path: str) -> None:
     with codecs.open(file_path, 'w', 'utf-8-sig') as output:
         for hash_ in sorted(list(hashset_data)):
@@ -43,7 +39,6 @@ def save_hashset_data(hashset_data: set[str], file_path: str) -> None:
             output.write('\n')
 
 
-@typechecked
 def _generate_collection_definition(data_dir: str, collection_dict: CollectionDict, collection_name: str) -> None:
     locations = collection_dict[collection_name][COLLECTION_VALUE_LOCATIONS]
     storage_devices = ibds_utils.locations_to_storage_devices(locations)
@@ -79,7 +74,6 @@ def _generate_collection_definition(data_dir: str, collection_dict: CollectionDi
         save_hashset_data(hash_table_item, path_generator.gen_hashset_file_path(collection_name, data_dir, storage_device_))
 
 
-@typechecked
 def generate_collections_definition(data_dir: str, collection_dict: CollectionDict) -> None:
     for collection_name in sorted(collection_dict.keys()):
         _generate_collection_definition(data_dir, collection_dict, collection_name)

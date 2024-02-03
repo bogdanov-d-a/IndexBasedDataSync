@@ -1,11 +1,9 @@
-from typeguard import typechecked
 from typing import Optional
 from . import file_tree_snapshot
 from . import ibds_utils
 from . import ibds_tablegen
 
 
-@typechecked
 def _multi_indexes(index_list: list[file_tree_snapshot.Index], complete_locations: set[int], name: Optional[str]=None) -> None:
     table = ibds_tablegen.indexes(index_list)
     complete_locations_list = sorted(list(complete_locations))
@@ -30,13 +28,11 @@ def _multi_indexes(index_list: list[file_tree_snapshot.Index], complete_location
     ibds_utils.print_lists(print_lists, name)
 
 
-@typechecked
 def multi_index_files(index_file_list: list[str], complete_locations: set[int], name: Optional[str]=None) -> None:
     index_list = list(map(lambda index_file: file_tree_snapshot.load_index(index_file), index_file_list))
     _multi_indexes(index_list, complete_locations, name)
 
 
-@typechecked
 def _multi_indexes_by_hash(index_list: list[file_tree_snapshot.Index], name: Optional[str]=None) -> None:
     table = ibds_tablegen.indexes_by_hash(index_list)
 
@@ -54,7 +50,6 @@ def _multi_indexes_by_hash(index_list: list[file_tree_snapshot.Index], name: Opt
     ibds_utils.print_lists(print_lists, name)
 
 
-@typechecked
 def multi_index_by_hash_files(index_file_list: list[str], name: Optional[str]=None) -> None:
     index_list = list(map(lambda index_file: file_tree_snapshot.load_index(index_file), index_file_list))
     _multi_indexes_by_hash(index_list, name)

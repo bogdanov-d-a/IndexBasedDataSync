@@ -1,4 +1,3 @@
-from typeguard import typechecked
 from edpu import user_interaction
 from edpu import pause_at_end
 from . import collection_scanner
@@ -10,7 +9,6 @@ from . import ibds_utils
 from . import user_data
 
 
-@typechecked
 def run(user_data: user_data.UserData) -> None:
     def main() -> None:
         ACTIONS = [

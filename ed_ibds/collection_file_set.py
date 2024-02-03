@@ -1,11 +1,9 @@
 import os
-from typeguard import typechecked
 from .user_data import CollectionDict, COLLECTION_VALUE_LOCATIONS
 from . import ibds_utils
 from . import path_generator
 
 
-@typechecked
 def generate_target_file_list(collection_dict: CollectionDict) -> list[str]:
     list_: list[str] = []
 
@@ -19,12 +17,10 @@ def generate_target_file_list(collection_dict: CollectionDict) -> list[str]:
     return list_
 
 
-@typechecked
 def generate_actual_file_list(data_dir: str) -> list[str]:
     return os.listdir(data_dir)
 
 
-@typechecked
 def check_data_file_set(data_dir: str, collection_dict: CollectionDict) -> None:
     target = set(generate_target_file_list(collection_dict))
     actual = set(generate_actual_file_list(data_dir))

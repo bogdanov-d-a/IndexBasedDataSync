@@ -1,9 +1,7 @@
 from __future__ import annotations
-from typeguard import typechecked
 from . import storage_device
 
 
-@typechecked
 class Location:
     def __init__(self: Location, storage_device_: storage_device.StorageDevice, path: str, is_complete: bool) -> None:
         self._storage_device = storage_device_

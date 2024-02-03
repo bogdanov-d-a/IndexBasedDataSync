@@ -1,10 +1,8 @@
-from typeguard import typechecked
 from typing import Optional
 from . import file_tree_snapshot
 from . import ibds_utils
 
 
-@typechecked
 def indexes(index_list: list[file_tree_snapshot.Index]) -> dict[str, list[Optional[file_tree_snapshot.FileInfo]]]:
     table: dict[str, list[Optional[file_tree_snapshot.FileInfo]]] = {}
 
@@ -24,13 +22,11 @@ def indexes(index_list: list[file_tree_snapshot.Index]) -> dict[str, list[Option
     return table
 
 
-@typechecked
 def index_files(index_file_list: list[str]) -> dict[str, list[Optional[file_tree_snapshot.FileInfo]]]:
     index_list = list(map(lambda path: file_tree_snapshot.load_index(path), index_file_list))
     return indexes(index_list)
 
 
-@typechecked
 def indexes_by_hash(index_list: list[file_tree_snapshot.Index]) -> dict[str, list[bool]]:
     table: dict[str, list[bool]] = {}
 
@@ -56,22 +52,18 @@ def indexes_by_hash(index_list: list[file_tree_snapshot.Index]) -> dict[str, lis
     return table
 
 
-@typechecked
 def _get_data_hashes(data: list[Optional[file_tree_snapshot.FileInfo]], keep_none: bool=False) -> list[Optional[str]]:
     return list(map(lambda x: x.getHash() if x is not None else None, filter(lambda x: keep_none or x is not None, data)))
 
 
-@typechecked
 def get_data_hashes(data: list[Optional[file_tree_snapshot.FileInfo]]) -> list[str]:
     return _get_data_hashes(data)
 
 
-@typechecked
 def get_data_hashes_with_none(data: list[Optional[file_tree_snapshot.FileInfo]]) -> list[Optional[str]]:
     return _get_data_hashes(data, True)
 
 
-@typechecked
 def get_same_hash(data: list[Optional[file_tree_snapshot.FileInfo]]) -> Optional[str]:
     hashes = get_data_hashes(data)
     return hashes[0] if ibds_utils.is_same_list(hashes) else None

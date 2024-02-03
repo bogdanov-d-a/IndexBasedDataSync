@@ -1,8 +1,6 @@
 from __future__ import annotations
-from typeguard import typechecked
 
 
-@typechecked
 class StorageDevice:
     def __init__(self: StorageDevice, name: str, is_removable: bool, is_scan_available: bool) -> None:
         self._name = name

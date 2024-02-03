@@ -1,5 +1,4 @@
 from __future__ import annotations
-from typeguard import typechecked
 from . import location
 from . import storage_device
 
@@ -14,7 +13,6 @@ CollectionDict = dict[str, CollectionValue]
 CollectionList = list[tuple[str, CollectionValue]]
 
 
-@typechecked
 class UserData:
     def __init__(self: UserData, collection_dict: CollectionDict, device_list: list[storage_device.StorageDevice], data_path: str, skip_mtime: bool, compare_only_available: bool) -> None:
         self._collection_dict = collection_dict

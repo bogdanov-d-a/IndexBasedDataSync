@@ -1,4 +1,3 @@
-from typeguard import typechecked
 from .user_data import CollectionDict, CollectionList, COLLECTION_VALUE_LOCATIONS, COLLECTION_VALUE_SCAN_SKIP_PATHS
 from edpu import storage_finder
 from . import path_generator
@@ -7,12 +6,10 @@ from . import file_tree_snapshot
 from . import storage_device
 
 
-@typechecked
 def _scan_collection_storage_device(data_dir: str, collection_name: str, storage_device_: storage_device.StorageDevice, data_path: str, skip_paths: list[str], skip_mtime: bool) -> None:
     file_tree_snapshot.update_index_file(data_path, path_generator.gen_index_file_path(collection_name, storage_device_, data_dir), skip_paths, skip_mtime)
 
 
-@typechecked
 def scan_storage_device(data_dir: str, collection_dict: CollectionDict, storage_device_: storage_device.StorageDevice, skip_mtime: bool) -> None:
     path_prefix = storage_finder.keep_getting_storage_path(storage_device_.getName()) if storage_device_.isRemovable() else ''
 

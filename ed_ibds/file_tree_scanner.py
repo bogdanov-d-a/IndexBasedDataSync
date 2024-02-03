@@ -1,9 +1,7 @@
-from typeguard import typechecked
 from edpu import file_tree_walker
 from . import ibds_utils
 
 
-@typechecked
 def scan(root_path: str, skip_paths: list[str]) -> list[list[str]]:
     return file_tree_walker.walk(
         root_path,

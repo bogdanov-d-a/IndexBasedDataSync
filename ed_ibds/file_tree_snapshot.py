@@ -2,7 +2,6 @@ from __future__ import annotations
 import os
 import codecs
 from edpu import file_hashing
-from typeguard import typechecked
 from . import file_tree_scanner
 from . import ibds_utils
 
@@ -10,7 +9,6 @@ from . import ibds_utils
 INDEX_PATH_SEPARATOR = '\\'
 
 
-@typechecked
 class FileInfo:
     def __init__(self: FileInfo, mtime: float, hash_: str) -> None:
         self.setMtime(mtime)
@@ -29,7 +27,6 @@ class FileInfo:
         self._hash = hash_
 
 
-@typechecked
 class Index:
     def __init__(self: Index) -> None:
         self._data: dict[str, FileInfo] = {}
@@ -50,7 +47,6 @@ class Index:
         return set(self._data.keys())
 
 
-@typechecked
 def _create_index(tree_path: str, skip_paths: list[str]) -> Index:
     index = Index()
 
@@ -63,7 +59,6 @@ def _create_index(tree_path: str, skip_paths: list[str]) -> Index:
     return index
 
 
-@typechecked
 def _update_index(old_index: Index, tree_path: str, skip_paths: list[str], skip_mtime: bool) -> Index:
     index = Index()
 
@@ -91,7 +86,6 @@ def _update_index(old_index: Index, tree_path: str, skip_paths: list[str], skip_
     return index
 
 
-@typechecked
 def load_index(file_path: str) -> Index:
     with codecs.open(file_path, 'r', 'utf-8-sig') as input_:
         data_ = Index()
@@ -107,7 +101,6 @@ def load_index(file_path: str) -> Index:
         return data_
 
 
-@typechecked
 def save_index(index: Index, file_path: str) -> None:
     with codecs.open(file_path, 'w', 'utf-8-sig') as output:
         for path, data in index.getPairList():
@@ -119,7 +112,6 @@ def save_index(index: Index, file_path: str) -> None:
             output.write('\n')
 
 
-@typechecked
 def update_index_file(tree_path: str, index_path: str, skip_paths: list[str], skip_mtime: bool) -> None:
     if os.path.isfile(index_path):
         old_index = load_index(index_path)
